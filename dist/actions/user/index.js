@@ -7,14 +7,12 @@
   Constants = require('../../constants/');
 
   Actions = {
-    loadScript: function(data) {
+    exampleAction: function(data) {
       return AppDispatcher.handleViewAction({
-        actionType: Constants.LOAD_SCRIPT,
+        actionType: Constants.EXAMPLE,
         data: data
       });
     }
   };
-
-  module.exports = Actions;
 
 }).call(this);

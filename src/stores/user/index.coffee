@@ -35,8 +35,6 @@ UserStore = Assign({}, EventEmitter::,
   dispatcherIndex: AppDispatcher.register( ->
       action = payload.action
 
-      switch action.actionType
-
       return true
     )
 )

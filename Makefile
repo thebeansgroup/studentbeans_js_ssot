@@ -4,7 +4,7 @@ build:
 	@coffee  --bare --compile --output dist/ src/
 
 install link: @npm $@
-    
+
 release-patch:  build
 	@$(call release,patch)
 
