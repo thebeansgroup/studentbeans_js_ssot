@@ -2,7 +2,7 @@
 AppDispatcher     = require('../../dispatcher/')
 
 # Constants
-Constants         = require('../../constants/third_party_api/')
+Constants         = require('../../constants/')
 
 Actions =
 

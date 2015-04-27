@@ -3,7 +3,7 @@ var Actions, AppDispatcher, Constants;
 
 AppDispatcher = require('../../dispatcher/');
 
-Constants = require('../../constants/third_party_api/');
+Constants = require('../../constants/');
 
 Actions = {
   loadScript: function(data) {
