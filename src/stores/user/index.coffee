@@ -32,7 +32,7 @@ UserStore = Assign({}, EventEmitter::,
   removeChangeListener: (callback) ->
     @removeListener(CHANGE_EVENT, callback)
 
-  dispatcherIndex: AppDispatcher.register( ->
+  dispatcherIndex: AppDispatcher.register( (payload) ->
       action = payload.action
 
       return true
