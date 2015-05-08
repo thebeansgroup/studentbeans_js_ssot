@@ -5,7 +5,9 @@ AppDispatcher     = require('../../dispatcher/')
 Constants         = require('../../constants/')
 
 Actions =
-  exampleAction: (data) ->
+  fetchStatus: (data) ->
     AppDispatcher.handleViewAction
-      actionType  : Constants.EXAMPLE
+      actionType  : Constants.USER_FETCH_STATUS
       data        : data
+
+module.exports = Actions
