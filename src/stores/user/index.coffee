@@ -16,9 +16,10 @@ _user             = {
                       status: "not_logged_in",
                       details: {}
                     } 
+window._user = _user
 
-status_url  = "http://studentbeans.dev/verge/status.json"
-details_url = "http://studentbeans.dev/verge/status.json"
+status_url  = window._stb?.url_manifest.verge_status_path
+details_url = window._stb?.url_manifest.join_simple_details_path 
 
 # Getters
 
@@ -31,6 +32,14 @@ _fetchStatus = ->
     _user.status = resp.status
     UserStore.emitChange()
 
+_fetchDetails = ->
+  req = Yaks.UTILS.request
+    url: details_url
+    type: 'json'
+    contentType: 'application/json'
+  req.then (resp)->
+    _user.details = resp
+    UserStore.emitChange()
 
 # Store
 UserStore = Assign({}, EventEmitter::,
