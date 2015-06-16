@@ -24,7 +24,14 @@ _scripts          = {
                         src       : '//apis.google.com/js/client:plus.js'
                         callback  : null
                       }
+                      'facebook-jssdk': {
+                        loaded    : false,
+                        src       : '//connect.facebook.net/en_GB/all.js'
+                        callback  : null
+                      }
                     }
+
+_timeouts          = []
 
 # Global Definitions
 Globals.initializeGoogleMaps = ->
@@ -69,6 +76,16 @@ ExternalScriptStore = Assign({}, EventEmitter::,
   #
   hasScriptLoaded: (type) ->
     _scripts[ type ].loaded
+
+  fbEnsureInit: (callback) ->
+    if !window.fbAPIInit
+      _timeouts[ 'fb_init' ] = setTimeout =>
+        @fbEnsureInit(callback)
+      , 50
+    else
+      clearTimeout _timeouts[ 'fb_init' ]
+      callback()    if(callback)
+
 
 
   emitChange: ->
