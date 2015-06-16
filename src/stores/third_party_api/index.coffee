@@ -15,17 +15,21 @@ Globals     = window.Scripts = {}
 # Private Collections
 _scripts          = {
                       'google_maps': {
-                        loaded  : false,
-                        src     : 'https://maps.googleapis.com/maps/api/js?v=3.exp&callback=Scripts.initializeGoogleMaps'
+                        loaded    : false,
+                        src       : '//maps.googleapis.com/maps/api/js?v=3.exp&callback=Scripts.initializeGoogleMaps'
+                        callback  : null
+                      }
+                      'gapi_client_plus': {
+                        loaded    : false,
+                        src       : '//apis.google.com/js/client:plus.js'
+                        callback  : null
                       }
                     }
-
 
 # Global Definitions
 Globals.initializeGoogleMaps = ->
   Globals.initializeGoogleMaps = null
   _setLoadState('google_maps', true)
-
 
 
 # Private Definitions
@@ -34,14 +38,17 @@ _setLoadState = (type, value) ->
   ExternalScriptStore.emitChange()
 
 
-_loadScript = (type) ->
+_loadScript = (type, callback) ->
   if !_scripts[ type ].loaded
     script         = document.createElement('script')
     script.async   = 'async'
     script.src     = _scripts[ type ].src
+
+    _scripts[ type ].callback = callback
     document.getElementsByTagName('head')[0].appendChild(script)
     script.onload  = ->
-      # maps need nothing here --- add load events for scripts without init callbacks
+      _setLoadState(type, true)
+      callback()    if callback?
 
 
 # Store
@@ -80,7 +87,7 @@ ExternalScriptStore = Assign({}, EventEmitter::,
     switch action.actionType
 
       when Constants.LOAD_SCRIPT
-        _loadScript(action.data)
+        _loadScript(action.data.name, action.data.callback)
         break
 
     true

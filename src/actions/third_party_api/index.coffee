@@ -6,9 +6,12 @@ Constants         = require('../../constants/')
 
 Actions =
 
-  loadScript: (data) ->
+  loadScript: (name, callback) ->
     AppDispatcher.handleViewAction
       actionType  : Constants.LOAD_SCRIPT
-      data        : data
+      data        : {
+                      name      : name
+                      callback  : callback
+                    }
 
 module.exports = Actions
