@@ -17,17 +17,17 @@ _scripts = {
   'google_maps': {
     loaded: false,
     src: '//maps.googleapis.com/maps/api/js?v=3.exp&callback=Scripts.initializeGoogleMaps',
-    callback: null
+    callback: true
   },
   'gapi_client_plus': {
     loaded: false,
     src: '//apis.google.com/js/client:plus.js',
-    callback: null
+    callback: false
   },
   'facebook-jssdk': {
     loaded: false,
     src: '//connect.facebook.net/en_GB/all.js',
-    callback: null
+    callback: false
   }
 };
 
@@ -49,13 +49,12 @@ _loadScript = function(type, callback) {
     script = document.createElement('script');
     script.async = 'async';
     script.src = _scripts[type].src;
-    _scripts[type].callback = callback;
     document.getElementsByTagName('head')[0].appendChild(script);
     return script.onload = function() {
-      _setLoadState(type, true);
-      if (callback != null) {
-        return callback();
+      if (_scripts[type].callback) {
+        return;
       }
+      return _setLoadState(type, true);
     };
   }
 };
