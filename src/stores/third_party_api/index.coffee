@@ -38,6 +38,15 @@ Globals.initializeGoogleMaps = ->
   Globals.initializeGoogleMaps = null
   _setLoadState('google_maps', true)
 
+fbEnsureInit = (callback) ->
+  if !window.fbAPIInit
+    _timeouts[ 'fb_init' ] = setTimeout =>
+      fbEnsureInit(callback)
+    , 50
+  else
+    clearTimeout _timeouts[ 'fb_init' ]
+    callback()    if(callback)
+
 
 # Private Definitions
 _setLoadState = (type, value) ->
@@ -54,7 +63,14 @@ _loadScript = (type, callback) ->
     document.getElementsByTagName('head')[0].appendChild(script)
     script.onload  = ->
       return if _scripts[ type ].callback
-      _setLoadState(type, true)
+      _isScriptReady(type)
+
+_isScriptReady = (type) ->
+  switch type
+    when 'gapi_client_plus'
+      gapi.load 'auth', => _setLoadState(type, true)
+    when 'facebook-jssdk'
+      fbEnsureInit => _setLoadState(type, true)
 
 
 # Store
@@ -75,16 +91,6 @@ ExternalScriptStore = Assign({}, EventEmitter::,
   #
   hasScriptLoaded: (type) ->
     _scripts[ type ].loaded
-
-  fbEnsureInit: (callback) ->
-    if !window.fbAPIInit
-      _timeouts[ 'fb_init' ] = setTimeout =>
-        @fbEnsureInit(callback)
-      , 50
-    else
-      clearTimeout _timeouts[ 'fb_init' ]
-      callback()    if(callback)
-
 
 
   emitChange: ->
