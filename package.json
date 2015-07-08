@@ -1,6 +1,6 @@
 {
   "name": "studentbeans_js_ssot",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Singleton data flow 'single source of truth' for Student Beans",
   "main": "./dist/index.js",
   "private": true,
