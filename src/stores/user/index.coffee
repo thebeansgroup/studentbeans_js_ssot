@@ -13,6 +13,7 @@ CHANGE_EVENT      = 'change'
 
 # Collections
 _user             = {
+                      role: "unregistered_users",
                       status: "not_logged_in",
                       details: {}
                     } 
@@ -29,6 +30,7 @@ _fetchStatus = ->
     type: 'json'
     contentType: 'application/json'
   req.then (resp)->
+    _user.role = resp.role
     _user.status = resp.status
     UserStore.emitChange()
 
@@ -50,6 +52,9 @@ UserStore = Assign({}, EventEmitter::,
   #
   getAll: ->
     _user
+
+  getRole: ->
+    _user.role
 
   getStatus: ->
     _user.status

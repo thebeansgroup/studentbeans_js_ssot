@@ -14,6 +14,7 @@ Constants = require('../../constants/');
 CHANGE_EVENT = 'change';
 
 _user = {
+  role: "unregistered_users",
   status: "not_logged_in",
   details: {}
 };
@@ -32,6 +33,7 @@ _fetchStatus = function() {
     contentType: 'application/json'
   });
   return req.then(function(resp) {
+    _user.role = resp.role;
     _user.status = resp.status;
     return UserStore.emitChange();
   });
@@ -53,6 +55,9 @@ _fetchDetails = function() {
 UserStore = Assign({}, EventEmitter.prototype, {
   getAll: function() {
     return _user;
+  },
+  getRole: function() {
+    return _user.role;
   },
   getStatus: function() {
     return _user.status;
