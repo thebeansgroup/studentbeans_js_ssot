@@ -34,9 +34,10 @@ _fetchStatus = function() {
     contentType: 'application/json'
   });
   return req.then(function(resp) {
+    var ref2;
     _user.role = resp.role;
     _user.status = resp.status;
-    _user.flash = resp.meta.flash || [];
+    _user.flash = ((ref2 = resp.meta) != null ? ref2.flash : void 0) || [];
     return UserStore.emitChange();
   });
 };

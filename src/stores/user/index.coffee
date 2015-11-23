@@ -33,7 +33,7 @@ _fetchStatus = ->
   req.then (resp)->
     _user.role = resp.role
     _user.status = resp.status
-    _user.flash = resp.meta.flash or []
+    _user.flash = resp.meta?.flash or []
 
     UserStore.emitChange()
 
