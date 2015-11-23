@@ -15,12 +15,13 @@ CHANGE_EVENT      = 'change'
 _user             = {
                       role: "unregistered_users",
                       status: "not_logged_in",
+                      flash: [],
                       details: {}
-                    } 
+                    }
 window._user = _user
 
 status_url  = window._stb?.url_manifest.verge_status_path
-details_url = window._stb?.url_manifest.join_simple_details_path 
+details_url = window._stb?.url_manifest.join_simple_details_path
 
 # Getters
 
@@ -32,6 +33,8 @@ _fetchStatus = ->
   req.then (resp)->
     _user.role = resp.role
     _user.status = resp.status
+    _user.flash = resp.meta.flash or []
+
     UserStore.emitChange()
 
 _fetchDetails = ->
@@ -62,6 +65,9 @@ UserStore = Assign({}, EventEmitter::,
   getDetails: ->
     _user.details
 
+  getFlash: ->
+    _user.flash
+
   emitChange: ->
     @emit(CHANGE_EVENT)
 
@@ -73,7 +79,7 @@ UserStore = Assign({}, EventEmitter::,
 
   dispatcherIndex: AppDispatcher.register( (payload) ->
       action = payload.action
-      
+
       switch action.actionType
         when Constants.USER_FETCH_STATUS
           _fetchStatus(action.data)

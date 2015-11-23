@@ -16,6 +16,7 @@ CHANGE_EVENT = 'change';
 _user = {
   role: "unregistered_users",
   status: "not_logged_in",
+  flash: [],
   details: {}
 };
 
@@ -35,6 +36,7 @@ _fetchStatus = function() {
   return req.then(function(resp) {
     _user.role = resp.role;
     _user.status = resp.status;
+    _user.flash = resp.meta.flash || [];
     return UserStore.emitChange();
   });
 };
@@ -64,6 +66,9 @@ UserStore = Assign({}, EventEmitter.prototype, {
   },
   getDetails: function() {
     return _user.details;
+  },
+  getFlash: function() {
+    return _user.flash;
   },
   emitChange: function() {
     return this.emit(CHANGE_EVENT);
