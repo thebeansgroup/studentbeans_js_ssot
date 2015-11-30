@@ -27,6 +27,7 @@
     "codo": "^2.0.11",
     "coffeeify": "^0.7.0",
     "semver": "^4.3.3",
+    "tbg-flux-factory": "^0.2.0",
     "yaks": "^0.7.0"
   }
 }
