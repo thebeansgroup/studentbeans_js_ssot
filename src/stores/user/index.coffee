@@ -14,10 +14,12 @@ CHANGE_EVENT      = 'change'
 # Collections
 _user             = {
                       role: "unregistered_users",
-                      status: "not_logged_in",
+                      status: ["not_logged_in",""],
+                      reverifying: false,
                       flash: [],
-                      details: {}
+                      details: [{},{}]
                     }
+
 window._user = _user
 
 status_url  = window._stb?.url_manifest.verge_status_path
@@ -33,6 +35,7 @@ _fetchStatus = ->
   req.then (resp)->
     _user.role = resp.role
     _user.status = resp.status
+    _user.reverifying = resp.reverifying
     _user.flash = resp.meta?.flash or []
 
     UserStore.emitChange()
@@ -54,7 +57,13 @@ UserStore = Assign({}, EventEmitter::,
   # @return [Object]
   #
   getAll: ->
-    _user
+    Assign {}, _user
+
+  getAllActive: ->
+    Assign {}, {
+      status: _user.status[ if _user.reverifying then 1 else 0 ]
+      details: _user.details[ if _user.reverifying then 1 else 0 ]
+    }
 
   getRole: ->
     _user.role
@@ -64,6 +73,12 @@ UserStore = Assign({}, EventEmitter::,
 
   getDetails: ->
     _user.details
+
+  getVerification: ->
+    _user.details[ if _user.reverifying then 1 else 0 ]
+
+  getVerificationStatus: ->
+    _user.status[ if _user.reverifying then 1 else 0 ]
 
   getFlash: ->
     _user.flash
