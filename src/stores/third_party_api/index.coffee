@@ -17,17 +17,17 @@ _scripts          = {
                       'google_maps': {
                         loaded    : false,
                         src       : '//maps.googleapis.com/maps/api/js?v=3.exp&callback=Scripts.initializeGoogleMaps'
-                        callback  : null
+                        callback  : true
                       }
                       'gapi_client_plus': {
                         loaded    : false,
                         src       : '//apis.google.com/js/client:plus.js'
-                        callback  : null
+                        callback  : false
                       }
                       'facebook-jssdk': {
                         loaded    : false,
                         src       : '//connect.facebook.net/en_GB/all.js'
-                        callback  : null
+                        callback  : false
                       }
                     }
 
@@ -37,6 +37,15 @@ _timeouts          = []
 Globals.initializeGoogleMaps = ->
   Globals.initializeGoogleMaps = null
   _setLoadState('google_maps', true)
+
+fbEnsureInit = (callback) ->
+  if !window.fbAPIInit
+    _timeouts[ 'fb_init' ] = setTimeout =>
+      fbEnsureInit(callback)
+    , 50
+  else
+    clearTimeout _timeouts[ 'fb_init' ]
+    callback()    if(callback)
 
 
 # Private Definitions
@@ -51,11 +60,17 @@ _loadScript = (type, callback) ->
     script.async   = 'async'
     script.src     = _scripts[ type ].src
 
-    _scripts[ type ].callback = callback
     document.getElementsByTagName('head')[0].appendChild(script)
     script.onload  = ->
-      _setLoadState(type, true)
-      callback()    if callback?
+      return if _scripts[ type ].callback
+      _isScriptReady(type)
+
+_isScriptReady = (type) ->
+  switch type
+    when 'gapi_client_plus'
+      gapi.load 'auth', => _setLoadState(type, true)
+    when 'facebook-jssdk'
+      fbEnsureInit => _setLoadState(type, true)
 
 
 # Store
@@ -76,16 +91,6 @@ ExternalScriptStore = Assign({}, EventEmitter::,
   #
   hasScriptLoaded: (type) ->
     _scripts[ type ].loaded
-
-  fbEnsureInit: (callback) ->
-    if !window.fbAPIInit
-      _timeouts[ 'fb_init' ] = setTimeout =>
-        @fbEnsureInit(callback)
-      , 50
-    else
-      clearTimeout _timeouts[ 'fb_init' ]
-      callback()    if(callback)
-
 
 
   emitChange: ->
