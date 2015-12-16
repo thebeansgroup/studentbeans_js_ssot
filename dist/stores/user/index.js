@@ -64,6 +64,12 @@
     },
     getAllActive: function() {
       return Assign({}, {
+        status: _user.status[0],
+        details: _user.details[0]
+      });
+    },
+    getAllVerification: function() {
+      return Assign({}, {
         status: _user.status[_user.reverifying ? 1 : 0],
         details: _user.details[_user.reverifying ? 1 : 0]
       });
@@ -72,10 +78,10 @@
       return _user.role;
     },
     getStatus: function() {
-      return _user.status;
+      return _user.status[0];
     },
     getDetails: function() {
-      return _user.details;
+      return _user.details[0];
     },
     getVerification: function() {
       return _user.details[_user.reverifying ? 1 : 0];

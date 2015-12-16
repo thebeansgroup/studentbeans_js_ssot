@@ -61,6 +61,12 @@ UserStore = Assign({}, EventEmitter::,
 
   getAllActive: ->
     Assign {}, {
+      status: _user.status[ 0 ]
+      details: _user.details[ 0 ]
+    }
+
+  getAllVerification: ->
+    Assign {}, {
       status: _user.status[ if _user.reverifying then 1 else 0 ]
       details: _user.details[ if _user.reverifying then 1 else 0 ]
     }
@@ -69,10 +75,10 @@ UserStore = Assign({}, EventEmitter::,
     _user.role
 
   getStatus: ->
-    _user.status
+    _user.status[0]
 
   getDetails: ->
-    _user.details
+    _user.details[0]
 
   getVerification: ->
     _user.details[ if _user.reverifying then 1 else 0 ]
