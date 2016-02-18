@@ -12,13 +12,13 @@ Constants         = require('../../constants/')
 CHANGE_EVENT      = 'change'
 
 # Collections
-_user             = {
-                      role: "unregistered_users",
-                      status: ["not_logged_in",""],
-                      reverifying: false,
-                      flash: [],
-                      details: [{},{}]
-                    }
+_user   = {
+  role: 'unregistered_users',
+  status: ['not_logged_in', ''],
+  reverifying: false,
+  flash: [],
+  details: [{}, {}]
+}
 
 window._user = _user
 
@@ -32,7 +32,7 @@ _fetchStatus = ->
     url: status_url
     type: 'json'
     contentType: 'application/json'
-  req.then (resp)->
+  req.then (resp) ->
     _user.role = resp.role
     _user.status = resp.status
     _user.reverifying = resp.reverifying
@@ -45,7 +45,7 @@ _fetchDetails = ->
     url: details_url
     type: 'json'
     contentType: 'application/json'
-  req.then (resp)->
+  req.then (resp) ->
     _user.details = resp
     UserStore.emitChange()
 
@@ -99,19 +99,19 @@ UserStore = Assign({}, EventEmitter::,
     @removeListener(CHANGE_EVENT, callback)
 
   dispatcherIndex: AppDispatcher.register( (payload) ->
-      action = payload.action
+    action = payload.action
 
-      switch action.actionType
-        when Constants.USER_FETCH_STATUS
-          _fetchStatus(action.data)
-          break
+    switch action.actionType
+      when Constants.USER_FETCH_STATUS
+        _fetchStatus(action.data)
+        break
 
-        when Constants.USER_FETCH_DETAILS
-          _fetchDetails(action.data)
-          break
+      when Constants.USER_FETCH_DETAILS
+        _fetchDetails(action.data)
+        break
 
-      return true
-    )
+    return true
+  )
 )
 
 module.exports = UserStore

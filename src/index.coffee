@@ -1,4 +1,4 @@
 module.exports =
-  Stores      : require('./stores')
-  Actions     : require('./actions')
-  Dispatcher  : require('./dispatcher')
+  Stores: require('./stores')
+  Actions: require('./actions')
+  Dispatcher: require('./dispatcher')

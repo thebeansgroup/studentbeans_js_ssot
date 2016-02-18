@@ -13,23 +13,27 @@ CHANGE_EVENT      = 'change'
 Globals     = window.Scripts = {}
 
 # Private Collections
-_scripts          = {
-                      'google_maps': {
-                        loaded    : false,
-                        src       : '//maps.googleapis.com/maps/api/js?v=3.exp&callback=Scripts.initializeGoogleMaps'
-                        callback  : true
-                      }
-                      'gapi_client_plus': {
-                        loaded    : false,
-                        src       : '//apis.google.com/js/client:plus.js'
-                        callback  : false
-                      }
-                      'facebook-jssdk': {
-                        loaded    : false,
-                        src       : '//connect.facebook.net/en_GB/all.js'
-                        callback  : false
-                      }
-                    }
+_scripts =
+  'google_maps':
+    loaded: false,
+    src: '
+      //maps.googleapis.com/maps/api/js?
+      v=3.exp&
+      callback=Scripts.initializeGoogleMaps
+    '
+    callback: true
+
+  'gapi_client_plus':
+    loaded: false,
+    src: '//apis.google.com/js/client:plus.js'
+    callback: false
+
+  'facebook-jssdk':
+    loaded: false,
+    src: '//connect.facebook.net/en_GB/all.js'
+    callback: false
+
+
 
 _timeouts          = []
 
@@ -40,7 +44,7 @@ Globals.initializeGoogleMaps = ->
 
 fbEnsureInit = (callback) ->
   if !window.fbAPIInit
-    _timeouts[ 'fb_init' ] = setTimeout =>
+    _timeouts[ 'fb_init' ] = setTimeout ->
       fbEnsureInit(callback)
     , 50
   else
@@ -68,9 +72,9 @@ _loadScript = (type, callback) ->
 _isScriptReady = (type) ->
   switch type
     when 'gapi_client_plus'
-      gapi.load 'auth', => _setLoadState(type, true)
+      gapi.load 'auth', -> _setLoadState(type, true)
     when 'facebook-jssdk'
-      fbEnsureInit => _setLoadState(type, true)
+      fbEnsureInit -> _setLoadState(type, true)
 
 
 # Store
