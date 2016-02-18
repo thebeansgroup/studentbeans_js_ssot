@@ -9,7 +9,7 @@ AppDispatcher = Assign(new Dispatcher(),
   #
   handleViewAction: (action) ->
     @dispatch
-      source: "VIEW_ACTION"
+      source: 'VIEW_ACTION'
       action: action
 
     return
@@ -20,7 +20,7 @@ AppDispatcher = Assign(new Dispatcher(),
   #
   handleServerAction: (action) ->
     @dispatch
-      source: "SERVER_ACTION"
+      source: 'SERVER_ACTION'
       action: action
 
     return

@@ -8,10 +8,10 @@ Actions =
 
   loadScript: (name, callback) ->
     AppDispatcher.handleViewAction
-      actionType  : Constants.LOAD_SCRIPT
-      data        : {
-                      name      : name
-                      callback  : callback
-                    }
+      actionType: Constants.LOAD_SCRIPT
+      data: {
+        name: name
+        callback: callback
+      }
 
 module.exports = Actions
